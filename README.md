@@ -1,4 +1,4 @@
-Money Tracker
+# Money tracker
 
 Team Members
 
