@@ -1,6 +1,6 @@
-#Money Tracker
+Money Tracker
 
-##Team Members
+Team Members
 
 * Amzekhan Ilyas
 * Askarova Akbota
