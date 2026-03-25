@@ -4,7 +4,7 @@ Team Members
 
 * Amzekhan Ilyas
 * Askarova Akbota
-* Amir
+* Bakhytzhan Amir
 
 ---
 
