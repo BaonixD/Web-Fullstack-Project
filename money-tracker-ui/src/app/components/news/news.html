@@ -1,0 +1,36 @@
+<app-sidebar />
+
+<main class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Новости</h1>
+      <p class="page-subtitle">Что происходит в OneTake Production</p>
+    </div>
+  </div>
+
+  <div class="news-feed fade-in">
+    <!-- Post editor -->
+    <div class="post-editor">
+      <div class="editor-avatar">АК</div>
+      <textarea placeholder="Написать пост..." [(ngModel)]="newPostText"></textarea>
+      <button class="btn btn-primary btn-sm">Опубликовать</button>
+    </div>
+
+    @if (posts.length === 0) {
+      <p style="color: var(--text-muted); margin-top: 20px;">Новостей пока нет.</p>
+    }
+
+    @for (post of posts; track post.id) {
+      <div class="news-post">
+        <div class="news-post-header">
+          <div class="news-author-avatar">📰</div>
+          <div>
+            <div class="news-author-name">{{ post.title }}</div>
+            <div class="news-author-role">{{ post.created_at | date:'dd.MM.yyyy HH:mm' }}</div>
+          </div>
+        </div>
+        <p>{{ post.content }}</p>
+      </div>
+    }
+  </div>
+</main>

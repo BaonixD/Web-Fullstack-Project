@@ -1,0 +1,74 @@
+<div class="auth-page">
+  <div class="auth-bg"></div>
+  <div class="auth-card">
+    <div class="logo" routerLink="/">
+      <div class="logo-icon">OT</div>
+      OneTake
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab" [class.active]="activeTab === 'login'" (click)="switchTab('login')">Вход</button>
+      <button class="auth-tab" [class.active]="activeTab === 'register'" (click)="switchTab('register')">Регистрация</button>
+    </div>
+
+    @if (error) {
+      <div class="error-msg">{{ error }}</div>
+    }
+
+    <!-- Login Form -->
+    @if (activeTab === 'login') {
+      <div>
+        <div class="form-group">
+          <label>Логин</label>
+          <input type="text" class="form-input" placeholder="username" [(ngModel)]="loginUsername">
+        </div>
+        <div class="form-group">
+          <label>Пароль</label>
+          <input type="password" class="form-input" placeholder="••••••••" [(ngModel)]="loginPassword">
+        </div>
+        <button class="btn btn-primary full-btn" (click)="login()">
+          Войти
+        </button>
+      </div>
+    }
+
+    <!-- Register Form -->
+    @if (activeTab === 'register') {
+      <div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Имя</label>
+            <input type="text" class="form-input" placeholder="Асель" [(ngModel)]="regFirstName">
+          </div>
+          <div class="form-group">
+            <label>Фамилия</label>
+            <input type="text" class="form-input" placeholder="Касымова" [(ngModel)]="regLastName">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Логин</label>
+          <input type="text" class="form-input" placeholder="username" [(ngModel)]="regUsername">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="form-input" placeholder="you@example.com" [(ngModel)]="regEmail">
+        </div>
+        <div class="form-group">
+          <label>Пароль</label>
+          <input type="password" class="form-input" placeholder="Минимум 8 символов" [(ngModel)]="regPassword">
+        </div>
+        <button class="btn btn-primary full-btn" (click)="register()">
+          Создать аккаунт
+        </button>
+      </div>
+    }
+
+    <div class="auth-divider">или</div>
+
+    <div class="social-buttons">
+      <button class="social-btn"><span>Google</span></button>
+      <button class="social-btn"><span>Telegram</span></button>
+      <button class="social-btn"><span>GitHub</span></button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<app-sidebar />
+
+<main class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Мемберы</h1>
+      <p class="page-subtitle">Управление участниками департамента</p>
+    </div>
+    <button class="btn btn-primary btn-sm">+ Добавить мембера</button>
+  </div>
+
+  <div class="members-grid fade-in">
+    @for (m of members; track m.name) {
+      <div class="member-card">
+        <div class="member-avatar" [style.background]="m.gradient">{{ m.initials }}</div>
+        <h4>{{ m.name }}</h4>
+        <div class="member-role">{{ m.role }}</div>
+        <div class="role-badge badge-member">Мембер</div>
+        <div class="member-stats">
+          <span><strong>{{ m.orders }}</strong> заказов</span>
+          <span><strong>{{ m.inProgress }}</strong> в работе</span>
+        </div>
+        <div class="member-actions">
+          <button class="btn btn-ghost btn-sm">✏️ Роль</button>
+          <button class="btn btn-danger btn-sm">🗑</button>
+        </div>
+      </div>
+    }
+
+    <div class="member-card add-card">
+      <div class="add-content">
+        <div class="add-icon">+</div>
+        <div class="add-label">Добавить мембера</div>
+      </div>
+    </div>
+  </div>
+</main>

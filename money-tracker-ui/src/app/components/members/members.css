@@ -1,0 +1,101 @@
+:host {
+  display: flex;
+  min-height: 100vh;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.member-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.member-card:hover {
+  border-color: rgba(232,255,71,0.2);
+  transform: translateY(-2px);
+}
+
+.member-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--bg);
+  margin-bottom: 14px;
+}
+
+.member-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.member-card .member-role {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.member-stats {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 14px;
+}
+
+.member-stats strong {
+  color: var(--text);
+}
+
+.member-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.member-actions .btn {
+  flex: 1;
+  justify-content: center;
+}
+
+.add-card {
+  border-style: dashed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  cursor: pointer;
+}
+
+.add-content {
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.add-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.add-label {
+  font-size: 14px;
+  font-weight: 600;
+}

@@ -1,0 +1,67 @@
+<div class="landing" (click)="closeDropdown()">
+  <div class="landing-bg"></div>
+
+  <nav class="nav">
+    <div class="logo" routerLink="/">
+      <div class="logo-icon">OT</div>
+      OneTake
+    </div>
+    <div class="nav-links">
+      <a routerLink="/">Главная</a>
+      <a routerLink="/news">Новости</a>
+      <a routerLink="/order-create">Заказать</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn-ghost btn-sm" routerLink="/auth">Войти</button>
+      <div class="menu-dots" (click)="toggleDropdown($event)">
+        <div class="dots-icon"><span></span><span></span><span></span></div>
+        <div class="dropdown" [class.show]="dropdownOpen">
+          <a routerLink="/auth">🔑 Войти в аккаунт</a>
+          <a routerLink="/auth" [queryParams]="{tab: 'register'}">📝 Регистрация</a>
+          <a routerLink="/profile">👤 Профиль</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="pulse"></span>
+      Принимаем заказы
+    </div>
+    <h1>Снимаем<br><span class="accent">с первого</span> дубля</h1>
+    <p>Видеосъёмка, фотосессии, подкасты и звукозапись. Создаём контент который цепляет — быстро, качественно и с характером.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-lg" routerLink="/order-create">
+        📋 Оставить заявку
+      </button>
+      <button class="btn btn-ghost btn-lg" routerLink="/auth">
+        🎬 Вступить в команду
+      </button>
+    </div>
+
+    <div class="services-strip">
+      <div class="service-chip">
+        <div class="icon">🎥</div>
+        <div class="info">
+          <h4>Видеосъёмка</h4>
+          <span>Клипы, подкасты, репортажи</span>
+        </div>
+      </div>
+      <div class="service-chip">
+        <div class="icon">📸</div>
+        <div class="info">
+          <h4>Фотосъёмка</h4>
+          <span>Портреты, мероприятия</span>
+        </div>
+      </div>
+      <div class="service-chip">
+        <div class="icon">🎙</div>
+        <div class="info">
+          <h4>Звукозапись</h4>
+          <span>Студия, монтаж, мастеринг</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

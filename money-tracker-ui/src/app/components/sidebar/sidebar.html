@@ -1,0 +1,36 @@
+<aside class="sidebar">
+  <div class="sidebar-logo" routerLink="/">
+    <div class="logo-icon">OT</div>
+    <span>OneTake</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Меню</div>
+    @for (link of menuLinks; track link.route) {
+      <a class="sidebar-link" [routerLink]="link.route" routerLinkActive="active" [routerLinkActiveOptions]="{exact: link.route === '/'}">
+        <span class="link-icon">{{ link.icon }}</span> {{ link.label }}
+        @if (link.badge) {
+          <span class="sidebar-badge">{{ link.badge }}</span>
+        }
+      </a>
+    }
+
+    <div class="sidebar-section-label">Заказы</div>
+    @for (link of orderLinks; track link.route) {
+      <a class="sidebar-link" [routerLink]="link.route" routerLinkActive="active">
+        <span class="link-icon">{{ link.icon }}</span> {{ link.label }}
+        @if (link.badge) {
+          <span class="sidebar-badge">{{ link.badge }}</span>
+        }
+      </a>
+    }
+  </nav>
+
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">{{ userInitials() }}</div>
+    <div class="sidebar-user-info">
+      <div class="name">{{ userName() }}</div>
+      <div class="role">{{ userRole() }}</div>
+    </div>
+  </div>
+</aside>

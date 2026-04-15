@@ -1,0 +1,63 @@
+<app-sidebar />
+
+<main class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Профиль</h1>
+      <p class="page-subtitle">Управление заказами и командой</p>
+    </div>
+    <button class="btn btn-ghost btn-sm" (click)="logout()">⬅ Выйти</button>
+  </div>
+
+  <div class="profile-header-card fade-in">
+    <div class="profile-avatar">
+      {{ auth.user()?.username?.substring(0, 2)?.toUpperCase() || 'U' }}
+    </div>
+    <div class="profile-info">
+      <h2>{{ auth.user()?.username || 'Пользователь' }}</h2>
+      <div class="role-badge badge-methodist">⭐ {{ auth.user()?.role || 'guest' }}</div>
+    </div>
+    <div class="profile-stats">
+      <div class="stat">
+        <div class="stat-num">{{ orders.length }}</div>
+        <div class="stat-label">Заказов</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-tabs">
+    @for (tab of tabs; track tab.label; let i = $index) {
+      <button class="panel-tab" [class.active]="activeTab === i" (click)="activeTab = i">
+        {{ tab.label }}
+        @if (tab.count) {
+          <span class="count">{{ tab.count }}</span>
+        }
+      </button>
+    }
+  </div>
+
+  @if (filteredOrders.length === 0) {
+    <p style="color: var(--text-muted); margin-top: 20px;">Заказов пока нет. <a routerLink="/order-create" style="color: var(--accent);">Создать первый?</a></p>
+  }
+
+  <div class="assignments-grid fade-in">
+    @for (order of filteredOrders; track order.id) {
+      <div class="assignment-card" [routerLink]="'/order-detail/' + order.id">
+        <div class="assignment-top">
+          <span class="assignment-type" [class]="getTypeClass(order.service_type)">{{ getTypeLabel(order.service_type) }}</span>
+          <span class="assignment-status" [class]="getStatusClass(order.status)">
+            <span class="status-dot"></span>{{ getStatusLabel(order.status) }}
+          </span>
+        </div>
+        <h3>{{ order.title }}</h3>
+        <p>{{ order.description }}</p>
+        <div class="assignment-meta">
+          <div class="assignment-person">
+            <span>{{ order.customer_name }}</span>
+          </div>
+          <span class="assignment-date">{{ order.created_at | date:'dd MMM yyyy' }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</main>
