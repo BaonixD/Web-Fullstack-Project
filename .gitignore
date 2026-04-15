@@ -1,17 +1,19 @@
-# Python
+# Среда разработки
 venv/
-*.pyc
-__pycache__/
+env/
+.env
 
-# Django
+# Кэш Python
+__pycache__/
+*.pyc
+
+# База данных (пусть напарник создаст свою чистую)
 db.sqlite3
+
+# Настройки IDE (на всякий случай дублируем здесь)
+.idea/
+.vscode/
+
+# Статические файлы
 media/
 staticfiles/
-
-# IDE
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
