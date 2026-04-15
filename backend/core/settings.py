@@ -143,3 +143,5 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'production.User'
+
+CORS_ALLOW_ALL_ORIGINS = True 
