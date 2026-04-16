@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Sidebar } from '../sidebar/sidebar';
@@ -21,7 +21,11 @@ export class Profile implements OnInit {
     { label: 'Завершённые', count: 0 },
   ];
 
-  constructor(public auth: AuthService, private api: ApiService) {}
+  constructor(
+    public auth: AuthService,
+    private api: ApiService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.api.getOrders().subscribe({
@@ -30,6 +34,7 @@ export class Profile implements OnInit {
         this.tabs[0].count = orders.length;
         this.tabs[1].count = orders.filter(o => o.status === 'in_progress').length;
         this.tabs[2].count = orders.filter(o => o.status === 'done').length;
+        this.cdr.detectChanges();
       }
     });
   }

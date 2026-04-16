@@ -4,8 +4,13 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 
 export interface UserInfo {
+  id: number;
   username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
   role: string;
+  department: string | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -26,6 +31,35 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
+  get initials(): string {
+    const u = this.currentUser();
+    if (!u) return 'U';
+    if (u.first_name && u.last_name) {
+      return (u.first_name[0] + u.last_name[0]).toUpperCase();
+    }
+    return u.username.substring(0, 2).toUpperCase();
+  }
+
+  get displayName(): string {
+    const u = this.currentUser();
+    if (!u) return 'Пользователь';
+    if (u.first_name && u.last_name) {
+      return `${u.first_name} ${u.last_name}`;
+    }
+    return u.username;
+  }
+
+  get roleName(): string {
+    const u = this.currentUser();
+    if (!u) return 'Гость';
+    const roles: Record<string, string> = {
+      'guest': 'Гость',
+      'member': 'Мембер',
+      'methodist': 'Методист',
+    };
+    return roles[u.role] || u.role;
+  }
+
   login(username: string, password: string) {
     return this.http.post<{ token: string }>('/api/login/', { username, password }).pipe(
       tap(res => {
@@ -40,10 +74,8 @@ export class AuthService {
       username, email, password, first_name: firstName, last_name: lastName
     }).pipe(
       tap(res => {
-        if (res.token) {
-          localStorage.setItem(this.tokenKey, res.token);
-          this.loadUser();
-        }
+        localStorage.setItem(this.tokenKey, res.token);
+        this.loadUser();
       })
     );
   }

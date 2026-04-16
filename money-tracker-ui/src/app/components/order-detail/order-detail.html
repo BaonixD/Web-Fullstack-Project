@@ -4,6 +4,9 @@
   @if (error) {
     <div class="error-msg">{{ error }}</div>
   }
+  @if (success) {
+    <div class="success-msg">{{ success }}</div>
+  }
 
   @if (order) {
     <div class="page-header">
@@ -39,6 +42,12 @@
             <span class="detail-label">Заказчик</span>
             <span class="detail-value">{{ order.customer_name }}</span>
           </div>
+          @if (order.executor_name) {
+            <div class="detail-row">
+              <span class="detail-label">Исполнитель</span>
+              <span class="detail-value">{{ order.executor_name }}</span>
+            </div>
+          }
         </div>
 
         <div class="detail-card">
@@ -48,18 +57,35 @@
       </div>
 
       <div>
+        <!-- Status change -->
+        <div class="detail-card" style="margin-bottom:20px;">
+          <h3>Изменить статус</h3>
+          <div class="form-group">
+            <label>Статус заказа</label>
+            <select class="form-input" [(ngModel)]="newStatus">
+              @for (s of statuses; track s.value) {
+                <option [value]="s.value">{{ s.label }}</option>
+              }
+            </select>
+          </div>
+          <button class="btn btn-primary btn-sm assign-btn" (click)="changeStatus()">
+            📝 Сохранить статус
+          </button>
+        </div>
+
+        <!-- Assign member -->
         <div class="detail-card">
           <h3>Распределить</h3>
           <div class="form-group">
             <label>Назначить мемберу</label>
             <select class="form-input" [(ngModel)]="assignTo">
-              <option>Тимур Нуров</option>
-              <option>Арман Жумабаев</option>
-              <option>Камила Серикова</option>
-              <option>Взять себе</option>
+              <option [ngValue]="null">— Не назначен —</option>
+              @for (m of members; track m.id) {
+                <option [ngValue]="m.id">{{ getMemberName(m) }}</option>
+              }
             </select>
           </div>
-          <button class="btn btn-primary btn-sm assign-btn">
+          <button class="btn btn-primary btn-sm assign-btn" (click)="assignOrder()">
             ✅ Назначить
           </button>
         </div>

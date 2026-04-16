@@ -14,23 +14,13 @@
         }
       </a>
     }
-
-    <div class="sidebar-section-label">Заказы</div>
-    @for (link of orderLinks; track link.route) {
-      <a class="sidebar-link" [routerLink]="link.route" routerLinkActive="active">
-        <span class="link-icon">{{ link.icon }}</span> {{ link.label }}
-        @if (link.badge) {
-          <span class="sidebar-badge">{{ link.badge }}</span>
-        }
-      </a>
-    }
   </nav>
 
   <div class="sidebar-user">
-    <div class="sidebar-avatar">{{ userInitials() }}</div>
+    <div class="sidebar-avatar">{{ auth.initials }}</div>
     <div class="sidebar-user-info">
-      <div class="name">{{ userName() }}</div>
-      <div class="role">{{ userRole() }}</div>
+      <div class="name">{{ auth.displayName }}</div>
+      <div class="role">{{ auth.roleName }}</div>
     </div>
   </div>
 </aside>

@@ -1,5 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 export interface SidebarLink {
   icon: string;
@@ -15,19 +16,13 @@ export interface SidebarLink {
   styleUrl: './sidebar.css'
 })
 export class Sidebar {
-  userName = input('Асель Касымова');
-  userRole = input('Методист');
-  userInitials = input('АК');
+  auth = inject(AuthService);
 
   menuLinks: SidebarLink[] = [
     { icon: '🏠', label: 'Главная', route: '/' },
     { icon: '👤', label: 'Профиль', route: '/profile' },
     { icon: '📋', label: 'Создать заказ', route: '/order-create' },
     { icon: '📰', label: 'Новости', route: '/news' },
-    { icon: '👥', label: 'Мемберы', route: '/members', badge: 12 },
-  ];
-
-  orderLinks: SidebarLink[] = [
-    { icon: '📦', label: 'Активные', route: '/order-detail', badge: 3 },
+    { icon: '👥', label: 'Мемберы', route: '/members' },
   ];
 }
