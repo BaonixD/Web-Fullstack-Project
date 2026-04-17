@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Sidebar } from '../sidebar/sidebar';
 import { AuthService } from '../../services/auth.service';
-import { ApiService, Order } from '../../services/api.service';
+import { ApiService, InterviewRequest, Order } from '../../services/api.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,11 +14,14 @@ import { ApiService, Order } from '../../services/api.service';
 export class Profile implements OnInit {
   activeTab = 0;
   orders: Order[] = [];
+  interviews: InterviewRequest[] = [];
+  interviewError = '';
 
   tabs = [
     { label: 'Все заказы', count: 0 },
     { label: 'В работе', count: 0 },
     { label: 'Завершённые', count: 0 },
+    { label: 'Интервью', count: 0 },
   ];
 
   constructor(
@@ -37,6 +40,7 @@ export class Profile implements OnInit {
         this.cdr.detectChanges();
       }
     });
+    this.loadInterviews();
   }
 
   get filteredOrders(): Order[] {
@@ -71,5 +75,41 @@ export class Profile implements OnInit {
 
   logout() {
     this.auth.logout();
+  }
+
+  loadInterviews() {
+    this.api.getInterviews().subscribe({
+      next: interviews => {
+        this.interviews = interviews;
+        this.tabs[3].count = interviews.filter(i => i.status === 'new').length;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.interviews = [];
+        this.tabs[3].count = 0;
+      }
+    });
+  }
+
+  approveInterview(interview: InterviewRequest) {
+    this.interviewError = '';
+    this.api.approveInterview(interview.id).subscribe({
+      next: () => this.loadInterviews(),
+      error: () => this.interviewError = 'Не удалось одобрить заявку'
+    });
+  }
+
+  rejectInterview(interview: InterviewRequest) {
+    this.interviewError = '';
+    this.api.rejectInterview(interview.id).subscribe({
+      next: () => this.loadInterviews(),
+      error: () => this.interviewError = 'Не удалось отклонить заявку'
+    });
+  }
+
+  getInterviewStatusLabel(status: string): string {
+    if (status === 'approved') return 'Одобрено';
+    if (status === 'rejected') return 'Отклонено';
+    return 'Новая';
   }
 }

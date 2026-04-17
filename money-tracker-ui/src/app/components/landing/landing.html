@@ -12,13 +12,20 @@
       <a routerLink="/order-create">Заказать</a>
     </div>
     <div class="nav-right">
-      <button class="btn btn-ghost btn-sm" routerLink="/auth">Войти</button>
+      @if (auth.token) {
+        <button class="btn btn-ghost btn-sm" routerLink="/profile">Профиль</button>
+      } @else {
+        <button class="btn btn-ghost btn-sm" routerLink="/auth">Войти</button>
+      }
       <div class="menu-dots" (click)="toggleDropdown($event)">
         <div class="dots-icon"><span></span><span></span><span></span></div>
         <div class="dropdown" [class.show]="dropdownOpen">
-          <a routerLink="/auth">🔑 Войти в аккаунт</a>
-          <a routerLink="/auth" [queryParams]="{tab: 'register'}">📝 Регистрация</a>
-          <a routerLink="/profile">👤 Профиль</a>
+          @if (auth.token) {
+            <a routerLink="/profile">👤 Профиль</a>
+          } @else {
+            <a routerLink="/auth">🔑 Войти в аккаунт</a>
+            <a routerLink="/auth" [queryParams]="{tab: 'register'}">📝 Регистрация</a>
+          }
         </div>
       </div>
     </div>
@@ -35,9 +42,15 @@
       <button class="btn btn-primary btn-lg" routerLink="/order-create">
         📋 Оставить заявку
       </button>
-      <button class="btn btn-ghost btn-lg" routerLink="/auth">
-        🎬 Вступить в команду
-      </button>
+      @if (auth.token) {
+        <button class="btn btn-ghost btn-lg" routerLink="/profile">
+          👤 Открыть профиль
+        </button>
+      } @else {
+        <button class="btn btn-ghost btn-lg" routerLink="/auth">
+          🎬 Вступить в команду
+        </button>
+      }
     </div>
 
     <div class="services-strip">

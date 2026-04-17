@@ -105,15 +105,25 @@
   gap: 16px;
 }
 
-.assignment-card {
+.interviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.assignment-card,
+.interview-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
   transition: var(--transition);
-  cursor: pointer;
   text-decoration: none;
   color: var(--text);
+}
+
+.assignment-card {
+  cursor: pointer;
 }
 
 .assignment-card:hover {
@@ -150,16 +160,41 @@
   gap: 5px;
 }
 
-.assignment-card h3 {
+.assignment-card h3,
+.interview-card h3 {
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
-.assignment-card p {
+.assignment-card p,
+.interview-card p {
   font-size: 13px;
   color: var(--text-dim);
   line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.portfolio-link {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.interview-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.error-msg {
+  background: rgba(255,71,87,0.1);
+  color: var(--danger);
+  border: 1px solid rgba(255,71,87,0.2);
+  border-radius: var(--radius-xs);
+  padding: 10px 14px;
+  font-size: 13px;
   margin-bottom: 16px;
 }
 

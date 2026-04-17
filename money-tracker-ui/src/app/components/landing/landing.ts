@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-landing',
@@ -9,6 +10,8 @@ import { RouterLink } from '@angular/router';
 })
 export class Landing {
   dropdownOpen = false;
+
+  constructor(public auth: AuthService) {}
 
   toggleDropdown(event: Event) {
     event.stopPropagation();

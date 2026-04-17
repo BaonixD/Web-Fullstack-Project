@@ -19,7 +19,6 @@ export class Sidebar {
   auth = inject(AuthService);
 
   menuLinks: SidebarLink[] = [
-    { icon: '🏠', label: 'Главная', route: '/' },
     { icon: '👤', label: 'Профиль', route: '/profile' },
     { icon: '📋', label: 'Создать заказ', route: '/order-create' },
     { icon: '📰', label: 'Новости', route: '/news' },

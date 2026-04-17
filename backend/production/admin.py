@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Order, NewsPost, InterviewRequest
+from .models import User, Order, NewsPost, InterviewRequest, ChatMessage
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -19,3 +19,8 @@ class NewsPostAdmin(admin.ModelAdmin):
 @admin.register(InterviewRequest)
 class InterviewRequestAdmin(admin.ModelAdmin):
     list_display = ('applicant', 'status', 'created_at')
+
+@admin.register(ChatMessage)
+class ChatMessageAdmin(admin.ModelAdmin):
+    list_display = ('order', 'sender', 'created_at')
+    search_fields = ('text', 'sender__username', 'order__title')

@@ -39,7 +39,25 @@ class NewsPost(models.Model):
         return self.title
 
 class InterviewRequest(models.Model):
+    STATUS_CHOICES = (
+        ('new', 'Новая'),
+        ('approved', 'Одобрена'),
+        ('rejected', 'Отклонена'),
+    )
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     portfolio_link = models.URLField()
-    status = models.CharField(max_length=20, default='new')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class ChatMessage(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='messages')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chat_messages')
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f'Order #{self.order_id} message by {self.sender}'

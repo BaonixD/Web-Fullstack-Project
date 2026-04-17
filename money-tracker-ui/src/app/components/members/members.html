@@ -8,6 +8,38 @@
     </div>
   </div>
 
+  @if (error) {
+    <div class="error-msg">{{ error }}</div>
+  }
+
+  @if (interviews.length > 0) {
+    <section class="interview-section fade-in">
+      <div class="section-header">
+        <div>
+          <h2>Заявки на интервью <span class="request-count">{{ interviews.length }}</span></h2>
+          <p>Пользователи, которые хотят вступить в команду</p>
+        </div>
+      </div>
+
+      <div class="interview-grid">
+        @for (interview of interviews; track interview.id) {
+          <div class="interview-card">
+            <div class="candidate-avatar">{{ (interview.applicant_full_name || interview.applicant_name).substring(0, 2).toUpperCase() }}</div>
+            <div class="candidate-info">
+              <h4>{{ interview.applicant_full_name || interview.applicant_name }}</h4>
+              <div class="member-role">{{ interview.applicant_email || 'Email не указан' }}</div>
+              <a class="portfolio-link" [href]="interview.portfolio_link" target="_blank" rel="noreferrer">Портфолио</a>
+            </div>
+            <div class="member-actions">
+              <button class="btn btn-primary btn-sm" (click)="approveInterview(interview)">✅ Одобрить</button>
+              <button class="btn btn-ghost btn-sm" (click)="rejectInterview(interview)">✕ Отклонить</button>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
   @if (members.length === 0) {
     <p style="color: var(--text-muted); margin-top: 20px;">Мемберов пока нет.</p>
   }
@@ -19,6 +51,11 @@
         <h4>{{ getDisplayName(m) }}</h4>
         <div class="member-role">{{ m.department || 'Не указано' }}</div>
         <div class="role-badge badge-member">Мембер</div>
+        @if (auth.user()?.role === 'methodist') {
+          <div class="member-actions">
+            <button class="btn btn-danger btn-sm" (click)="removeMember(m)">🗑 Удалить</button>
+          </div>
+        }
       </div>
     }
   </div>

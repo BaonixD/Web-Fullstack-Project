@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Sidebar } from '../sidebar/sidebar';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-order-create',
-  imports: [FormsModule, Sidebar],
+  imports: [FormsModule, RouterLink, Sidebar],
   templateUrl: './order-create.html',
   styleUrl: './order-create.css'
 })
@@ -19,6 +20,7 @@ export class OrderCreate {
   needsMontage = 'no';
   montageInstructions = '';
   error = '';
+  showAuthPrompt = false;
 
   formats = [
     { icon: '🎬', label: 'Клип', desc: 'Музыкальное видео', value: 'video' },
@@ -26,7 +28,11 @@ export class OrderCreate {
     { icon: '📸', label: 'Фотосессия', desc: 'Портреты, события', value: 'photo' },
   ];
 
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(
+    private api: ApiService,
+    private router: Router,
+    public auth: AuthService
+  ) {}
 
   selectFormat(index: number) {
     this.selectedFormat = index;
@@ -38,7 +44,13 @@ export class OrderCreate {
       this.error = 'Укажите название заказа';
       return;
     }
+    if (!this.auth.token) {
+      this.error = '';
+      this.showAuthPrompt = true;
+      return;
+    }
     this.error = '';
+    this.showAuthPrompt = false;
     this.api.createOrder({
       title: this.orderTitle,
       description: this.orderDetails,

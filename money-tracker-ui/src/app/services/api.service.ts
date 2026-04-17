@@ -34,6 +34,27 @@ export interface Member {
   department: string | null;
 }
 
+export interface InterviewRequest {
+  id: number;
+  applicant: number;
+  applicant_name: string;
+  applicant_email: string;
+  applicant_full_name: string;
+  portfolio_link: string;
+  status: string;
+  created_at: string;
+}
+
+export interface ChatMessage {
+  id: number;
+  order: number;
+  sender: number;
+  sender_name: string;
+  sender_role: string;
+  text: string;
+  created_at: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   constructor(private http: HttpClient) {}
@@ -59,6 +80,10 @@ export class ApiService {
     return this.http.delete(`/api/orders/${id}/`);
   }
 
+  getOrderMessages(orderId: number) {
+    return this.http.get<ChatMessage[]>(`/api/orders/${orderId}/messages/`);
+  }
+
   // News
   getNews() {
     return this.http.get<NewsPost[]>('/api/news/');
@@ -68,8 +93,37 @@ export class ApiService {
     return this.http.post<NewsPost>('/api/news/', { title, content });
   }
 
+  updateNews(id: number, title: string, content: string) {
+    return this.http.put<NewsPost>(`/api/news/${id}/`, { title, content });
+  }
+
+  deleteNews(id: number) {
+    return this.http.delete(`/api/news/${id}/`);
+  }
+
   // Members
   getMembers() {
     return this.http.get<Member[]>('/api/members/');
+  }
+
+  removeMember(id: number) {
+    return this.http.delete(`/api/members/${id}/`);
+  }
+
+  // Interviews
+  getInterviews() {
+    return this.http.get<InterviewRequest[]>('/api/interviews/');
+  }
+
+  createInterview(portfolioLink: string) {
+    return this.http.post<InterviewRequest>('/api/interviews/', { portfolio_link: portfolioLink });
+  }
+
+  approveInterview(id: number) {
+    return this.http.post<InterviewRequest>(`/api/interviews/${id}/approve/`, {});
+  }
+
+  rejectInterview(id: number) {
+    return this.http.post<InterviewRequest>(`/api/interviews/${id}/reject/`, {});
   }
 }

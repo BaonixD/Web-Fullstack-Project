@@ -22,13 +22,18 @@ export class AuthService {
   isLoggedIn = computed(() => !!this.token);
 
   constructor(private http: HttpClient, private router: Router) {
+    const legacyToken = localStorage.getItem(this.tokenKey);
+    if (!sessionStorage.getItem(this.tokenKey) && legacyToken) {
+      sessionStorage.setItem(this.tokenKey, legacyToken);
+      localStorage.removeItem(this.tokenKey);
+    }
     if (this.token) {
       this.loadUser();
     }
   }
 
   get token(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return sessionStorage.getItem(this.tokenKey) || localStorage.getItem(this.tokenKey);
   }
 
   get initials(): string {
@@ -63,7 +68,8 @@ export class AuthService {
   login(username: string, password: string) {
     return this.http.post<{ token: string }>('/api/login/', { username, password }).pipe(
       tap(res => {
-        localStorage.setItem(this.tokenKey, res.token);
+        sessionStorage.setItem(this.tokenKey, res.token);
+        localStorage.removeItem(this.tokenKey);
         this.loadUser();
       })
     );
@@ -74,7 +80,8 @@ export class AuthService {
       username, email, password, first_name: firstName, last_name: lastName
     }).pipe(
       tap(res => {
-        localStorage.setItem(this.tokenKey, res.token);
+        sessionStorage.setItem(this.tokenKey, res.token);
+        localStorage.removeItem(this.tokenKey);
         this.loadUser();
       })
     );
@@ -88,6 +95,7 @@ export class AuthService {
   }
 
   logout() {
+    sessionStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.tokenKey);
     this.currentUser.set(null);
     this.router.navigate(['/']);

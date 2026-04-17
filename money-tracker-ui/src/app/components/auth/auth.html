@@ -57,6 +57,16 @@
           <label>Пароль</label>
           <input type="password" class="form-input" placeholder="Минимум 8 символов" [(ngModel)]="regPassword">
         </div>
+        <label class="interview-choice">
+          <input type="checkbox" [(ngModel)]="wantsInterview">
+          <span>Пройти интервью в команду</span>
+        </label>
+        @if (wantsInterview) {
+          <div class="form-group">
+            <label>Портфолио</label>
+            <input type="url" class="form-input" placeholder="https://..." [(ngModel)]="portfolioLink">
+          </div>
+        }
         <button class="btn btn-primary full-btn" (click)="register()">
           Создать аккаунт
         </button>

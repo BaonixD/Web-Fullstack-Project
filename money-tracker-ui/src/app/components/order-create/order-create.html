@@ -43,6 +43,19 @@
       <div class="error-msg">{{ error }}</div>
     }
 
+    @if (!auth.token && showAuthPrompt) {
+      <div class="auth-required">
+        <div>
+          <h4>Сначала войдите в аккаунт</h4>
+          <p>Чтобы отправить заказ, нужен профиль. Так мы сможем сохранить заявку и показать её статус.</p>
+        </div>
+        <div class="auth-actions">
+          <button class="btn btn-primary btn-sm" routerLink="/auth">Войти</button>
+          <button class="btn btn-ghost btn-sm" routerLink="/auth" [queryParams]="{tab: 'register'}">Зарегистрироваться</button>
+        </div>
+      </div>
+    }
+
     <button class="btn btn-primary btn-lg submit-btn" (click)="submit()">
       🚀 Отправить заказ
     </button>

@@ -84,6 +84,23 @@
   margin-top: 8px;
 }
 
+.interview-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.interview-choice input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+
 .auth-divider {
   display: flex;
   align-items: center;

@@ -9,6 +9,52 @@
   gap: 16px;
 }
 
+.interview-section {
+  margin-bottom: 32px;
+  max-width: 760px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.section-header h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-header p {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.request-count {
+  background: var(--danger);
+  color: white;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  min-width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.interview-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
 .member-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -21,7 +67,20 @@
   transition: var(--transition);
 }
 
-.member-card:hover {
+.interview-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.member-card:hover,
+.interview-card:hover {
   border-color: rgba(232,255,71,0.2);
   transform: translateY(-2px);
 }
@@ -40,16 +99,44 @@
   margin-bottom: 14px;
 }
 
-.member-card h4 {
+.candidate-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg,#a29bfe,#00cec9);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.candidate-info {
+  min-width: 0;
+}
+
+.member-card h4,
+.interview-card h4 {
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 4px;
+  color: var(--text);
 }
 
-.member-card .member-role {
+.member-card .member-role,
+.interview-card .member-role {
   font-size: 12px;
   color: var(--text-muted);
-  margin-bottom: 14px;
+  margin-bottom: 8px;
+}
+
+.portfolio-link {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .member-stats {
@@ -71,9 +158,25 @@
   width: 100%;
 }
 
+.interview-card .member-actions {
+  margin-top: 0;
+  width: auto;
+  min-width: 260px;
+}
+
 .member-actions .btn {
   flex: 1;
   justify-content: center;
+}
+
+.error-msg {
+  background: rgba(255,71,87,0.1);
+  color: var(--danger);
+  border: 1px solid rgba(255,71,87,0.2);
+  border-radius: var(--radius-xs);
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
 }
 
 .add-card {
@@ -98,4 +201,17 @@
 .add-label {
   font-size: 14px;
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .interview-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .interview-card .member-actions {
+    width: 100%;
+    min-width: 0;
+  }
 }

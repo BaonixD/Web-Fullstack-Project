@@ -100,6 +100,36 @@
   margin-bottom: 16px;
 }
 
+.auth-required {
+  background: rgba(232,255,71,0.08);
+  border: 1px solid rgba(232,255,71,0.28);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.auth-required h4 {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.auth-required p {
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.auth-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
 .submit-btn {
   width: 100%;
   justify-content: center;
@@ -108,4 +138,11 @@
 
 @media (max-width: 768px) {
   .format-grid { grid-template-columns: 1fr; }
+  .auth-required {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .auth-actions {
+    flex-direction: column;
+  }
 }

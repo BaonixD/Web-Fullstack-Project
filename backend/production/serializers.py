@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Order, NewsPost
+from .models import User, Order, NewsPost, InterviewRequest, ChatMessage
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -39,6 +39,34 @@ class NewsPostSerializer(serializers.ModelSerializer):
         model = NewsPost
         fields = ['id', 'title', 'content', 'author', 'author_name', 'author_role', 'created_at']
         read_only_fields = ['author', 'created_at']
+
+
+class InterviewRequestSerializer(serializers.ModelSerializer):
+    applicant_name = serializers.ReadOnlyField(source='applicant.username')
+    applicant_email = serializers.ReadOnlyField(source='applicant.email')
+    applicant_full_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = InterviewRequest
+        fields = [
+            'id', 'applicant', 'applicant_name', 'applicant_email', 'applicant_full_name',
+            'portfolio_link', 'status', 'created_at',
+        ]
+        read_only_fields = ['applicant', 'status', 'created_at']
+
+    def get_applicant_full_name(self, obj):
+        full_name = f'{obj.applicant.first_name} {obj.applicant.last_name}'.strip()
+        return full_name or obj.applicant.username
+
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    sender_name = serializers.ReadOnlyField(source='sender.username')
+    sender_role = serializers.ReadOnlyField(source='sender.role')
+
+    class Meta:
+        model = ChatMessage
+        fields = ['id', 'order', 'sender', 'sender_name', 'sender_role', 'text', 'created_at']
+        read_only_fields = ['order', 'sender', 'created_at']
 
 
 class UserLoginSerializer(serializers.Serializer):

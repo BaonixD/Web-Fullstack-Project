@@ -16,7 +16,9 @@
       </div>
       <div class="header-actions">
         <button class="btn btn-ghost btn-sm" routerLink="/profile">⬅ Назад</button>
-        <button class="btn btn-danger btn-sm" (click)="deleteOrder()">🗑 Удалить</button>
+        @if (canDeleteOrder()) {
+          <button class="btn btn-danger btn-sm" (click)="deleteOrder()">🗑 Удалить</button>
+        }
       </div>
     </div>
 
@@ -54,9 +56,50 @@
           <h3>Описание</h3>
           <p class="description-text">{{ order.description || 'Описание не указано' }}</p>
         </div>
+
+        <div class="detail-card chat-card">
+          <div class="chat-header">
+            <h3>Чат заказа</h3>
+            <span class="chat-status" [class.connected]="chatConnected">
+              <span class="status-dot"></span>{{ chatConnected ? 'Онлайн' : 'Офлайн' }}
+            </span>
+          </div>
+
+          <div class="chat-messages" #chatMessages>
+            @if (messages.length === 0) {
+              <p class="chat-empty">Сообщений пока нет.</p>
+            }
+            @for (message of messages; track message.id) {
+              <div class="chat-message" [class.own]="isOwnMessage(message)">
+                <div class="chat-bubble">
+                  <div class="chat-meta">
+                    <span>{{ message.sender_name }}</span>
+                    <span>{{ message.created_at | date:'dd.MM HH:mm' }}</span>
+                  </div>
+                  <p>{{ message.text }}</p>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="chat-compose">
+            <input
+              type="text"
+              class="form-input"
+              placeholder="Написать сообщение..."
+              [(ngModel)]="chatText"
+              (keyup.enter)="sendMessage()"
+              [disabled]="!chatConnected"
+            >
+            <button class="btn btn-primary btn-sm" (click)="sendMessage()" [disabled]="!chatConnected">
+              Отправить
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div>
+      @if (auth.user()?.role === 'methodist') {
+        <div>
         <!-- Status change -->
         <div class="detail-card" style="margin-bottom:20px;">
           <h3>Изменить статус</h3>
@@ -89,7 +132,8 @@
             ✅ Назначить
           </button>
         </div>
-      </div>
+        </div>
+      }
     </div>
   }
 </main>
