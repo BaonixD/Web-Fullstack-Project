@@ -1,0 +1,110 @@
+<app-sidebar />
+
+<main class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Новый заказ</h1>
+      <p class="page-subtitle">Опишите что нужно снять или записать</p>
+    </div>
+  </div>
+
+  <div class="order-form-card fade-in">
+    <h3>Выберите формат</h3>
+    <div class="format-grid">
+      @for (fmt of formats; track fmt.label; let i = $index) {
+        <button class="format-option" [class.selected]="selectedFormat === i" (click)="selectFormat(i)">
+          <div class="fmt-icon">{{ fmt.icon }}</div>
+          <div class="fmt-label">{{ fmt.label }}</div>
+          <div class="fmt-desc">{{ fmt.desc }}</div>
+        </button>
+      }
+    </div>
+
+    <div class="form-group">
+      <label>Тип</label>
+      <select class="form-input" [(ngModel)]="orderType">
+        <option value="video">Видеосъёмка</option>
+        <option value="photo">Фотосъёмка</option>
+        <option value="design">Дизайн</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Название заказа</label>
+      <input type="text" class="form-input" placeholder="Например: Подкаст про IT в Казахстане" [(ngModel)]="orderTitle">
+    </div>
+
+    <div class="form-group">
+      <label>Подробности</label>
+      <textarea class="form-input" placeholder="Опишите что нужно, стиль, локацию, пожелания..." [(ngModel)]="orderDetails"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Дедлайн</label>
+      <div class="deadline-row">
+        <select class="form-input deadline-part" [(ngModel)]="deadlineDay" (ngModelChange)="onDeadlinePartChange()">
+          <option [ngValue]="null">День</option>
+          @for (d of days; track d) {
+            <option [ngValue]="d">{{ d }}</option>
+          }
+        </select>
+        <select class="form-input deadline-part" [(ngModel)]="deadlineMonth" (ngModelChange)="onDeadlinePartChange()">
+          <option [ngValue]="null">Месяц</option>
+          @for (m of months; track m.value) {
+            <option [ngValue]="m.value">{{ m.label }}</option>
+          }
+        </select>
+        <select class="form-input deadline-part" [(ngModel)]="deadlineYear" (ngModelChange)="onDeadlinePartChange()">
+          <option [ngValue]="null">Год</option>
+          @for (y of years; track y) {
+            <option [ngValue]="y">{{ y }}</option>
+          }
+        </select>
+      </div>
+      <div class="deadline-quick">
+        <button type="button" class="btn btn-ghost btn-sm" (click)="quickDeadline(7)">+1 неделя</button>
+        <button type="button" class="btn btn-ghost btn-sm" (click)="quickDeadline(14)">+2 недели</button>
+        <button type="button" class="btn btn-ghost btn-sm" (click)="quickDeadline(30)">+1 месяц</button>
+        @if (deadline) {
+          <button type="button" class="btn btn-ghost btn-sm" (click)="clearDeadline()">Сбросить</button>
+        }
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Обложка (необязательно)</label>
+      @if (coverPreview) {
+        <div class="cover-preview">
+          <img [src]="coverPreview" alt="cover">
+          <button type="button" class="btn btn-ghost btn-sm" (click)="clearCover()">Удалить</button>
+        </div>
+      } @else {
+        <label class="cover-dropzone">
+          <span>📷 Выбрать изображение</span>
+          <input type="file" accept="image/*" (change)="onCoverChange($event)" hidden>
+        </label>
+      }
+    </div>
+
+    @if (error) {
+      <div class="error-msg">{{ error }}</div>
+    }
+
+    @if (!auth.token && showAuthPrompt) {
+      <div class="auth-required">
+        <div>
+          <h4>Сначала войдите в аккаунт</h4>
+          <p>Чтобы отправить заказ, нужен профиль. Так мы сможем сохранить заявку и показать её статус.</p>
+        </div>
+        <div class="auth-actions">
+          <button class="btn btn-primary btn-sm" routerLink="/auth">Войти</button>
+          <button class="btn btn-ghost btn-sm" routerLink="/auth" [queryParams]="{tab: 'register'}">Зарегистрироваться</button>
+        </div>
+      </div>
+    }
+
+    <button class="btn btn-primary btn-lg submit-btn" (click)="submit()">
+      🚀 Отправить заказ
+    </button>
+  </div>
+</main>

@@ -1,0 +1,74 @@
+<aside class="sidebar">
+  <div class="sidebar-logo" routerLink="/profile">
+    <div class="logo-icon">OT</div>
+    <span>OneTake</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Меню</div>
+    @for (link of menuLinks; track link.route) {
+      <a class="sidebar-link" [routerLink]="link.route" routerLinkActive="active" [routerLinkActiveOptions]="{exact: link.route === '/'}">
+        <span class="link-icon">{{ link.icon }}</span> {{ link.label }}
+        @if (link.badge) {
+          <span class="sidebar-badge">{{ link.badge }}</span>
+        }
+      </a>
+    }
+
+    @if (auth.user()) {
+      <button class="sidebar-link notify-btn" (click)="toggleNotifications()">
+        <span class="link-icon">🔔</span> Уведомления
+        @if (notify.unread() > 0) {
+          <span class="sidebar-badge">{{ notify.unread() }}</span>
+        }
+      </button>
+    }
+  </nav>
+
+  <button class="theme-toggle" (click)="theme.toggle()" [title]="theme.theme() === 'dark' ? 'Светлая тема' : 'Тёмная тема'">
+    <span class="theme-toggle-icon">{{ theme.theme() === 'dark' ? '☀' : '☾' }}</span>
+    <span class="theme-toggle-label">{{ theme.theme() === 'dark' ? 'Светлая тема' : 'Тёмная тема' }}</span>
+  </button>
+
+  <div class="sidebar-user">
+    @if (auth.user()?.avatar_url) {
+      <img class="sidebar-avatar sidebar-avatar-img" [src]="auth.user()?.avatar_url" alt="avatar" />
+    } @else {
+      <div class="sidebar-avatar">{{ auth.initials }}</div>
+    }
+    <div class="sidebar-user-info">
+      <div class="name">{{ auth.displayName }}</div>
+      <div class="role">{{ auth.roleName }}</div>
+    </div>
+  </div>
+</aside>
+
+@if (panelOpen()) {
+  <div class="notify-backdrop" (click)="closePanel()"></div>
+  <div class="notify-panel" (click)="$event.stopPropagation()">
+    <div class="notify-header">
+      <h3>Уведомления</h3>
+      @if (notify.unread() > 0) {
+        <button class="notify-mark-all" (click)="notify.markAllRead()">Прочитать все</button>
+      }
+    </div>
+    @if (notify.notifications().length === 0) {
+      <p class="notify-empty">Пока ничего нового.</p>
+    } @else {
+      <div class="notify-list">
+        @for (n of notify.notifications(); track n.id) {
+          <button class="notify-item" [class.unread]="!n.is_read" (click)="openNotification(n)">
+            <span class="notify-icon">{{ iconForKind(n.kind) }}</span>
+            <div class="notify-body">
+              <div class="notify-text">{{ n.text }}</div>
+              <div class="notify-time">{{ n.created_at | date:'dd MMM, HH:mm' }}</div>
+            </div>
+            @if (!n.is_read) {
+              <span class="notify-dot"></span>
+            }
+          </button>
+        }
+      </div>
+    }
+  </div>
+}

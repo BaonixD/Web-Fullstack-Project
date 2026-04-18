@@ -1,0 +1,117 @@
+<app-sidebar />
+
+<main class="page-content">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Профиль</h1>
+      <p class="page-subtitle">Управление заказами и командой</p>
+    </div>
+    <button class="btn btn-ghost btn-sm" (click)="logout()">⬅ Выйти</button>
+  </div>
+
+  <div class="profile-header-card fade-in">
+    <label class="profile-avatar" title="Сменить аватар">
+      @if (auth.user()?.avatar_url) {
+        <img [src]="auth.user()?.avatar_url" alt="avatar" />
+      } @else {
+        {{ auth.user()?.username?.substring(0, 2)?.toUpperCase() || 'U' }}
+      }
+      <span class="upload-overlay">Сменить</span>
+      <input type="file" accept="image/*" (change)="onAvatarChange($event)" hidden>
+    </label>
+    <div class="profile-info">
+      <h2>{{ auth.user()?.username || 'Пользователь' }}</h2>
+      <div class="role-badge badge-methodist">⭐ {{ auth.user()?.role || 'guest' }}</div>
+    </div>
+    <div class="profile-stats">
+      <div class="stat">
+        <div class="stat-num">{{ orders.length }}</div>
+        <div class="stat-label">Заказов</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-tabs">
+    @for (tab of tabs; track tab.label; let i = $index) {
+      @if (i < 3 || auth.user()?.role === 'methodist' || (i === 3 && interviews.length > 0)) {
+        <button class="panel-tab" [class.active]="activeTab === i" (click)="activeTab = i">
+          {{ tab.label }}
+          @if (tab.count) {
+            <span class="count">{{ tab.count }}</span>
+          }
+        </button>
+      }
+    }
+  </div>
+
+  @if (activeTab === 3) {
+    @if (loadingInterviews) {
+      <div class="interviews-grid">
+        @for (_ of skeletonPlaceholders(3); track $index) {
+          <app-skeleton-card />
+        }
+      </div>
+    } @else if (interviews.length === 0) {
+      <p style="color: var(--text-muted); margin-top: 20px;">Заявок на интервью пока нет.</p>
+    } @else {
+      <div class="interviews-grid fade-in">
+        @for (interview of interviews; track interview.id) {
+          <div class="interview-card">
+            <div class="assignment-top">
+              <span class="assignment-type type-video">Интервью</span>
+              <span class="assignment-status" [class]="interview.status === 'rejected' ? 'status-pending' : getStatusClass(interview.status === 'approved' ? 'done' : 'in_progress')">
+                <span class="status-dot"></span>{{ getInterviewStatusLabel(interview.status) }}
+              </span>
+            </div>
+            <h3>{{ interview.applicant_full_name || interview.applicant_name }}</h3>
+            <p>{{ interview.applicant_email || 'Email не указан' }}</p>
+            <a class="portfolio-link" [href]="interview.portfolio_link" target="_blank" rel="noreferrer">Открыть портфолио</a>
+            @if (interview.feedback) {
+              <p class="interview-feedback"><strong>Комментарий:</strong> {{ interview.feedback }}</p>
+            }
+            <div class="assignment-meta">
+              <span class="assignment-date">{{ interview.created_at | date:'dd MMM yyyy' }}</span>
+            </div>
+            @if (interview.status === 'new' && auth.user()?.role === 'methodist') {
+              <div class="interview-actions">
+                <button class="btn btn-primary btn-sm" (click)="approveInterview(interview)">✅ Одобрить</button>
+                <button class="btn btn-ghost btn-sm" (click)="rejectInterview(interview)">✕ Отклонить</button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  } @else {
+    @if (loadingOrders) {
+      <div class="assignments-grid">
+        @for (_ of skeletonPlaceholders(6); track $index) {
+          <app-skeleton-card />
+        }
+      </div>
+    } @else if (filteredOrders.length === 0) {
+      <p style="color: var(--text-muted); margin-top: 20px;">Заказов пока нет. <a routerLink="/order-create" style="color: var(--accent);">Создать первый?</a></p>
+    } @else {
+      <div class="assignments-grid fade-in">
+        @for (order of filteredOrders; track order.id) {
+          <div class="assignment-card" [routerLink]="'/order-detail/' + order.id">
+            <div class="assignment-top">
+              <span class="assignment-type" [class]="getTypeClass(order.service_type)">{{ getTypeLabel(order.service_type) }}</span>
+              <span class="assignment-status" [class]="getStatusClass(order.status)">
+                <span class="status-dot"></span>{{ getStatusLabel(order.status) }}
+              </span>
+            </div>
+            <h3>{{ order.title }}</h3>
+            <p>{{ order.description }}</p>
+            <div class="assignment-meta">
+              <div class="assignment-person">
+                <span>{{ order.customer_name }}</span>
+              </div>
+              <span class="assignment-date">{{ order.created_at | date:'dd MMM yyyy' }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</main>

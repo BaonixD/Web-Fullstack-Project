@@ -1,0 +1,85 @@
+<app-sidebar />
+
+<main class="page-content">
+  <div class="page-header">
+    <div>
+      <a routerLink="/members" class="back-link">← Назад к мемберам</a>
+      <h1 class="page-title">Профиль мембера</h1>
+      <p class="page-subtitle">Информация об участнике команды</p>
+    </div>
+    @if (auth.user()?.role === 'methodist' && !loading && member) {
+      <button class="btn btn-danger btn-sm" (click)="onRemove()">🗑 Удалить мембера</button>
+    }
+  </div>
+
+  @if (loading) {
+    <div class="member-hero skeleton-hero">
+      <app-skeleton width="96px" height="96px" shape="circle" />
+      <div class="skeleton-hero-info">
+        <app-skeleton width="180px" height="24px" />
+        <app-skeleton width="120px" height="14px" />
+        <app-skeleton width="100px" height="20px" radius="100px" />
+      </div>
+    </div>
+    <div class="stats-row">
+      <app-skeleton width="100%" height="80px" radius="16px" />
+      <app-skeleton width="100%" height="80px" radius="16px" />
+    </div>
+    <div class="assignments-grid">
+      <app-skeleton-card />
+      <app-skeleton-card />
+      <app-skeleton-card />
+    </div>
+  } @else if (member) {
+    <div class="member-hero fade-in">
+      <div class="member-hero-avatar">{{ getInitials() }}</div>
+      <div class="member-hero-info">
+        <h2>{{ getDisplayName() }}</h2>
+        <p class="member-hero-email">{{ member.email || 'Email не указан' }}</p>
+        <div class="member-hero-badges">
+          <span class="role-badge badge-member">Мембер</span>
+          <span class="role-badge badge-guest">{{ member.department || 'Без департамента' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row fade-in">
+      <div class="stat-card">
+        <div class="stat-num">{{ member.active_orders }}</div>
+        <div class="stat-label">Активных заказов</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">{{ member.completed_orders }}</div>
+        <div class="stat-label">Завершённых</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">{{ member.active_orders + member.completed_orders }}</div>
+        <div class="stat-label">Всего назначено</div>
+      </div>
+    </div>
+
+    <h3 class="section-title">Назначенные заказы</h3>
+    @if (member.orders.length === 0) {
+      <p style="color: var(--text-muted);">Заказов на этого мембера пока нет.</p>
+    } @else {
+      <div class="assignments-grid fade-in">
+        @for (order of member.orders; track order.id) {
+          <div class="assignment-card" [routerLink]="'/order-detail/' + order.id">
+            <div class="assignment-top">
+              <span class="assignment-type">{{ getTypeLabel(order.service_type) }}</span>
+              <span class="assignment-status" [class]="getStatusClass(order.status)">
+                <span class="status-dot"></span>{{ getStatusLabel(order.status) }}
+              </span>
+            </div>
+            <h3>{{ order.title }}</h3>
+            <p>{{ order.description }}</p>
+            <div class="assignment-meta">
+              <span>{{ order.customer_name }}</span>
+              <span class="assignment-date">{{ order.created_at | date:'dd MMM yyyy' }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</main>

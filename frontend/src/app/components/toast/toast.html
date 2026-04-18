@@ -1,0 +1,9 @@
+<div class="toast-stack">
+  @for (t of toast.toasts(); track t.id) {
+    <div class="toast toast-{{ t.kind }}" role="status">
+      <div class="toast-icon">{{ iconFor(t.kind) }}</div>
+      <div class="toast-message">{{ t.message }}</div>
+      <button class="toast-close" (click)="toast.dismiss(t.id)" aria-label="Закрыть">✕</button>
+    </div>
+  }
+</div>
