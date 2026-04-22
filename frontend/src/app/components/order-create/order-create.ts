@@ -27,6 +27,7 @@ export class OrderCreate {
   deadlineYear: number | null = null;
   coverFile: File | null = null;
   coverPreview: string | null = null;
+  coverIsVideo = false;
 
   months = [
     { value: 1, label: 'Январь' },
@@ -140,6 +141,7 @@ export class OrderCreate {
     const file = input.files?.[0];
     if (!file) return;
     this.coverFile = file;
+    this.coverIsVideo = file.type.startsWith('video/');
     const reader = new FileReader();
     reader.onload = () => this.coverPreview = reader.result as string;
     reader.readAsDataURL(file);
@@ -148,5 +150,6 @@ export class OrderCreate {
   clearCover() {
     this.coverFile = null;
     this.coverPreview = null;
+    this.coverIsVideo = false;
   }
 }

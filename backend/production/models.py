@@ -25,7 +25,7 @@ class Order(models.Model):
     executor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks')
 
     status = models.CharField(max_length=50, default='pending')
-    cover_image = models.ImageField(upload_to='order_covers/', blank=True, null=True)
+    cover_image = models.FileField(upload_to='order_covers/', blank=True, null=True)
     deadline = models.DateField(blank=True, null=True)
     started_at = models.DateTimeField(blank=True, null=True)
     finished_at = models.DateTimeField(blank=True, null=True)

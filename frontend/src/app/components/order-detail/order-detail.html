@@ -9,12 +9,6 @@
   }
 
   @if (order) {
-    @if (order.cover_url) {
-      <div class="order-cover">
-        <img [src]="order.cover_url" alt="Обложка заказа">
-      </div>
-    }
-
     <div class="page-header">
       <div>
         <h1 class="page-title">{{ order.title }}</h1>
@@ -73,6 +67,19 @@
               <span class="detail-label">Исполнитель</span>
               <span class="detail-value">{{ order.executor_name }}</span>
             </div>
+          }
+          @if (order.cover_url) {
+            <div class="detail-row">
+              <span class="detail-label">Файл</span>
+              <a class="detail-value cover-file-link" [href]="order.cover_url" target="_blank" rel="noopener" download>
+                {{ isCoverVideo(order.cover_url) ? 'Скачать видео' : 'Скачать фото' }}
+              </a>
+            </div>
+            @if (isCoverVideo(order.cover_url)) {
+              <div class="cover-video-wrap">
+                <video [src]="order.cover_url" controls preload="metadata"></video>
+              </div>
+            }
           }
         </div>
 

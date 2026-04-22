@@ -71,16 +71,20 @@
     </div>
 
     <div class="form-group">
-      <label>Обложка (необязательно)</label>
+      <label>Файл (фото или видео, необязательно)</label>
       @if (coverPreview) {
         <div class="cover-preview">
-          <img [src]="coverPreview" alt="cover">
+          @if (coverIsVideo) {
+            <video [src]="coverPreview" controls></video>
+          } @else {
+            <img [src]="coverPreview" alt="cover">
+          }
           <button type="button" class="btn btn-ghost btn-sm" (click)="clearCover()">Удалить</button>
         </div>
       } @else {
         <label class="cover-dropzone">
-          <span>Выбрать изображение</span>
-          <input type="file" accept="image/*" (change)="onCoverChange($event)" hidden>
+          <span>Выбрать фото или видео</span>
+          <input type="file" accept="image/*,video/*" (change)="onCoverChange($event)" hidden>
         </label>
       }
     </div>

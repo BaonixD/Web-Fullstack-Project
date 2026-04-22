@@ -25,6 +25,12 @@ export class OrderDetail implements OnInit, OnDestroy {
   newStatus = '';
   chatText = '';
   chatFile: File | null = null;
+  coverBroken = false;
+
+  isCoverVideo(url: string | null | undefined): boolean {
+    if (!url) return false;
+    return /\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(url);
+  }
   chatConnected = false;
   error = '';
   success = '';
