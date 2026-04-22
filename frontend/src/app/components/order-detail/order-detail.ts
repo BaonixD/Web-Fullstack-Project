@@ -252,9 +252,9 @@ export class OrderDetail implements OnInit, OnDestroy {
   }
 
   getTypeLabel(type: string): string {
-    if (type === 'video') return '🎥 Видеосъёмка';
-    if (type === 'photo') return '📸 Фотосъёмка';
-    return '🎨 Дизайн';
+    if (type === 'video') return 'Видеосъёмка';
+    if (type === 'photo') return 'Фотосъёмка';
+    return 'Дизайн';
   }
 
   getStatusLabel(status: string): string {

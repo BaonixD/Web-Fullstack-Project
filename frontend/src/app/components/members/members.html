@@ -27,8 +27,8 @@
               <a class="portfolio-link" [href]="interview.portfolio_link" target="_blank" rel="noreferrer">Портфолио</a>
             </div>
             <div class="member-actions">
-              <button class="btn btn-primary btn-sm" (click)="approveInterview(interview)">✅ Одобрить</button>
-              <button class="btn btn-ghost btn-sm" (click)="rejectInterview(interview)">✕ Отклонить</button>
+              <button class="btn btn-primary btn-sm" (click)="approveInterview(interview)">Одобрить</button>
+              <button class="btn btn-ghost btn-sm" (click)="rejectInterview(interview)">Отклонить</button>
             </div>
           </div>
         }
@@ -62,7 +62,7 @@
           <div class="role-badge badge-member">Мембер</div>
           @if (auth.user()?.role === 'methodist') {
             <div class="member-actions">
-              <button class="btn btn-danger btn-sm" (click)="removeMember($event, m)">🗑 Удалить</button>
+              <button class="btn btn-danger btn-sm" (click)="removeMember($event, m)">Удалить</button>
             </div>
           }
         </div>

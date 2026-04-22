@@ -13,7 +13,6 @@
     <div class="format-grid">
       @for (fmt of formats; track fmt.label; let i = $index) {
         <button class="format-option" [class.selected]="selectedFormat === i" (click)="selectFormat(i)">
-          <div class="fmt-icon">{{ fmt.icon }}</div>
           <div class="fmt-label">{{ fmt.label }}</div>
           <div class="fmt-desc">{{ fmt.desc }}</div>
         </button>
@@ -80,7 +79,7 @@
         </div>
       } @else {
         <label class="cover-dropzone">
-          <span>📷 Выбрать изображение</span>
+          <span>Выбрать изображение</span>
           <input type="file" accept="image/*" (change)="onCoverChange($event)" hidden>
         </label>
       }
@@ -104,7 +103,7 @@
     }
 
     <button class="btn btn-primary btn-lg submit-btn" (click)="submit()">
-      🚀 Отправить заказ
+      Отправить заказ
     </button>
   </div>
 </main>

@@ -74,8 +74,8 @@
             </div>
             @if (interview.status === 'new' && auth.user()?.role === 'methodist') {
               <div class="interview-actions">
-                <button class="btn btn-primary btn-sm" (click)="approveInterview(interview)">✅ Одобрить</button>
-                <button class="btn btn-ghost btn-sm" (click)="rejectInterview(interview)">✕ Отклонить</button>
+                <button class="btn btn-primary btn-sm" (click)="approveInterview(interview)">Одобрить</button>
+                <button class="btn btn-ghost btn-sm" (click)="rejectInterview(interview)">Отклонить</button>
               </div>
             }
           </div>

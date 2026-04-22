@@ -65,6 +65,23 @@ body {
   color: #ffffff;
 }
 
+/* Landing nav — light theme override (base rule in landing.css is dark-glass) */
+:root[data-theme="light"] .nav {
+  background: rgba(255,255,255,0.75) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+}
+
+:root[data-theme="light"] .nav-links a {
+  color: var(--text-dim);
+}
+
+/* Landing radial-gradient bg is tuned for dark theme — soften in light */
+:root[data-theme="light"] .landing-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(150,170,0,0.06) 0%, transparent 60%),
+    radial-gradient(circle at 20% 80%, rgba(150,170,0,0.03) 0%, transparent 40%);
+}
+
 ::selection {
   background: var(--accent);
   color: var(--bg);

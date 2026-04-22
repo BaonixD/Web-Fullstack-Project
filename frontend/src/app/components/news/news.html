@@ -26,7 +26,7 @@
                     <video [src]="p.url" muted></video>
                     <span class="media-kind-badge">▶</span>
                   }
-                  <button type="button" class="media-remove" (click)="removePending(i)" title="Удалить">✕</button>
+                  <button type="button" class="media-remove" (click)="removePending(i)" title="Удалить">×</button>
                 </div>
               }
             </div>
@@ -34,7 +34,7 @@
 
           <div class="editor-actions">
             <label class="btn btn-ghost btn-sm media-picker-btn" title="Добавить фото / видео">
-              🖼 Добавить медиа
+              Добавить медиа
               <input type="file" accept="image/*,video/*" multiple hidden (change)="onMediaPick($event)">
             </label>
             <button class="btn btn-primary btn-sm" (click)="publishPost()">Опубликовать</button>
@@ -97,7 +97,7 @@
                   <button type="button" class="media-remove"
                     (click)="toggleRemoveExisting(m.id)"
                     [title]="isMarkedForRemoval(m.id) ? 'Восстановить' : 'Удалить'">
-                    {{ isMarkedForRemoval(m.id) ? '↺' : '✕' }}
+                    {{ isMarkedForRemoval(m.id) ? '↺' : '×' }}
                   </button>
                 </div>
               }
@@ -114,7 +114,7 @@
                     <video [src]="p.url" muted></video>
                     <span class="media-kind-badge">▶</span>
                   }
-                  <button type="button" class="media-remove" (click)="removeEditNew(i)" title="Удалить">✕</button>
+                  <button type="button" class="media-remove" (click)="removeEditNew(i)" title="Удалить">×</button>
                 </div>
               }
             </div>
@@ -122,7 +122,7 @@
 
           <div class="news-actions">
             <label class="news-action media-picker-btn">
-              🖼 Добавить медиа
+              Добавить медиа
               <input type="file" accept="image/*,video/*" multiple hidden (change)="onEditMediaPick($event)">
             </label>
             <button class="news-action accent-action" (click)="saveEdit(post)">Сохранить</button>
@@ -160,7 +160,7 @@
 
   @if (lightboxMedia) {
     <div class="lightbox-backdrop" (click)="closeLightbox()">
-      <button type="button" class="lightbox-close" (click)="closeLightbox()" aria-label="Закрыть">✕</button>
+      <button type="button" class="lightbox-close" (click)="closeLightbox()" aria-label="Закрыть">×</button>
       <div class="lightbox-content" (click)="$event.stopPropagation()">
         @if (lightboxMedia.kind === 'image') {
           <img [src]="lightboxMedia.url" alt="">

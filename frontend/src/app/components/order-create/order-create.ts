@@ -92,9 +92,9 @@ export class OrderCreate {
   }
 
   formats = [
-    { icon: '🎬', label: 'Клип', desc: 'Музыкальное видео', value: 'video' },
-    { icon: '🎙', label: 'Подкаст', desc: 'Интервью, разговоры', value: 'video' },
-    { icon: '📸', label: 'Фотосессия', desc: 'Портреты, события', value: 'photo' },
+    { label: 'Клип', desc: 'Музыкальное видео', value: 'video' },
+    { label: 'Подкаст', desc: 'Интервью, разговоры', value: 'video' },
+    { label: 'Фотосессия', desc: 'Портреты, события', value: 'photo' },
   ];
 
   constructor(

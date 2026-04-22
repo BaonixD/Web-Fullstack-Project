@@ -8,7 +8,7 @@
       <p class="page-subtitle">Информация об участнике команды</p>
     </div>
     @if (auth.user()?.role === 'methodist' && !loading && member) {
-      <button class="btn btn-danger btn-sm" (click)="onRemove()">🗑 Удалить мембера</button>
+      <button class="btn btn-danger btn-sm" (click)="onRemove()">Удалить мембера</button>
     }
   </div>
 

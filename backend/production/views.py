@@ -23,6 +23,23 @@ def _notify(user, kind, text, link=''):
     Notification.objects.create(user=user, kind=kind, text=text, link=link)
 
 
+def _order_stakeholders(order, exclude=None):
+    """Everyone who cares about this order: customer, executor, all methodists.
+
+    `exclude` is typically the actor (sender / status-changer) to avoid self-notification.
+    """
+    recipients = set()
+    if order.customer_id:
+        recipients.add(order.customer)
+    if order.executor_id:
+        recipients.add(order.executor)
+    recipients.update(User.objects.filter(role='methodist'))
+    recipients.discard(None)
+    if exclude is not None:
+        recipients.discard(exclude)
+    return recipients
+
+
 # ============ AUTH ============
 
 @api_view(['POST'])
@@ -212,10 +229,10 @@ class OrderDetailAPIView(APIView):
             if order.status == 'done' and not order.finished_at:
                 order.finished_at = timezone.now()
                 order.save(update_fields=['finished_at'])
-            # Notify customer + executor about status change
+            # Notify every stakeholder (customer + executor + all methodists) except the actor
             link = f'/order-detail/{order.id}'
             text = f'Статус заказа «{order.title}» изменён на «{order.status}»'
-            for u in {order.customer, order.executor} - {None, request.user}:
+            for u in _order_stakeholders(order, exclude=request.user):
                 _notify(u, 'order_status', text, link)
 
         if 'executor' in request.data and prev_executor_id != order.executor_id and order.executor:
@@ -254,9 +271,9 @@ def order_messages_fbv(request, pk):
         msg = ChatMessage.objects.create(
             order=order, sender=request.user, text=text, attachment=attachment,
         )
-        # Notify other party
+        # Notify every stakeholder (customer + executor + all methodists) except sender
         link = f'/order-detail/{order.id}'
-        for u in {order.customer, order.executor} - {None, request.user}:
+        for u in _order_stakeholders(order, exclude=request.user):
             _notify(u, 'order_message', f'Новое сообщение в заказе «{order.title}»', link)
         return Response(ChatMessageSerializer(msg, context={'request': request}).data,
                         status=status.HTTP_201_CREATED)

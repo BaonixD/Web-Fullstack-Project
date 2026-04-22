@@ -3,7 +3,7 @@ import json
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from .models import ChatMessage, Order, Notification
+from .models import ChatMessage, Order, Notification, User
 
 
 class OrderChatConsumer(AsyncWebsocketConsumer):
@@ -69,11 +69,18 @@ class OrderChatConsumer(AsyncWebsocketConsumer):
             sender=self.user,
             text=text,
         )
-        # Notify other party (customer/executor) about the new message
+        # Notify all stakeholders (customer + executor + every methodist) except the sender
         order = message.order
         link = f'/order-detail/{order.id}'
         text_preview = f'Новое сообщение в заказе «{order.title}»'
-        recipients = {order.customer, order.executor} - {None, self.user}
+        recipients = set()
+        if order.customer_id:
+            recipients.add(order.customer)
+        if order.executor_id:
+            recipients.add(order.executor)
+        recipients.update(User.objects.filter(role='methodist'))
+        recipients.discard(None)
+        recipients.discard(self.user)
         for recipient in recipients:
             Notification.objects.create(
                 user=recipient, kind='order_message', text=text_preview, link=link,

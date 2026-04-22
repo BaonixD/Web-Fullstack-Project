@@ -77,9 +77,9 @@ export class MemberDetail implements OnInit {
   }
 
   getTypeLabel(type: string): string {
-    if (type === 'video') return '🎥 Видео';
-    if (type === 'photo') return '📸 Фото';
-    return '🎨 Дизайн';
+    if (type === 'video') return 'Видео';
+    if (type === 'photo') return 'Фото';
+    return 'Дизайн';
   }
 
   async onRemove() {

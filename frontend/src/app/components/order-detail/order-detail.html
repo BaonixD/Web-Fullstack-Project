@@ -21,16 +21,16 @@
         <p class="page-subtitle">Заказ #{{ order.id }} — {{ getTypeLabel(order.service_type) }}</p>
       </div>
       <div class="header-actions">
-        <button class="btn btn-ghost btn-sm" routerLink="/profile">⬅ Назад</button>
+        <button class="btn btn-ghost btn-sm" routerLink="/profile">Назад</button>
         @if (canDeleteOrder()) {
-          <button class="btn btn-danger btn-sm" (click)="deleteOrder()">🗑 Удалить</button>
+          <button class="btn btn-danger btn-sm" (click)="deleteOrder()">Удалить</button>
         }
       </div>
     </div>
 
     @if (deadlineInfo(); as dl) {
       <div class="deadline-badge deadline-{{ dl.tone }}">
-        ⏰ Дедлайн: {{ order.deadline | date:'dd MMMM yyyy' }} — {{ dl.label }}
+        Дедлайн: {{ order.deadline | date:'dd MMMM yyyy' }} — {{ dl.label }}
       </div>
     }
 
@@ -127,7 +127,7 @@
                   }
                   @if (message.attachment_url) {
                     <a class="chat-attachment" [href]="message.attachment_url" target="_blank" rel="noopener">
-                      📎 {{ message.attachment_name || 'Вложение' }}
+                      {{ message.attachment_name || 'Вложение' }}
                     </a>
                   }
                 </div>
@@ -145,7 +145,7 @@
               [disabled]="!chatConnected && !chatFile"
             >
             <label class="btn btn-ghost btn-sm chat-attach-btn" title="Прикрепить файл">
-              📎
+              Файл
               <input type="file" hidden (change)="onChatFileChange($event)">
             </label>
             <button class="btn btn-primary btn-sm" (click)="sendMessage()"
@@ -155,8 +155,8 @@
           </div>
           @if (chatFile) {
             <div class="chat-file-preview">
-              <span>📎 {{ chatFile.name }}</span>
-              <button class="btn btn-ghost btn-sm" (click)="clearChatFile()">✖</button>
+              <span>{{ chatFile.name }}</span>
+              <button class="btn btn-ghost btn-sm" (click)="clearChatFile()">×</button>
             </div>
           }
         </div>
@@ -176,7 +176,7 @@
             </select>
           </div>
           <button class="btn btn-primary btn-sm assign-btn" (click)="changeStatus()">
-            📝 Сохранить статус
+            Сохранить статус
           </button>
         </div>
 
@@ -193,7 +193,7 @@
             </select>
           </div>
           <button class="btn btn-primary btn-sm assign-btn" (click)="assignOrder()">
-            ✅ Назначить
+            Назначить
           </button>
         </div>
         </div>

@@ -7,7 +7,6 @@ import { Notification } from '../../services/api.service';
 import { DatePipe } from '@angular/common';
 
 export interface SidebarLink {
-  icon: string;
   label: string;
   route: string;
   badge?: number;
@@ -28,10 +27,10 @@ export class Sidebar {
   panelOpen = signal(false);
 
   menuLinks: SidebarLink[] = [
-    { icon: '👤', label: 'Профиль', route: '/profile' },
-    { icon: '📋', label: 'Создать заказ', route: '/order-create' },
-    { icon: '📰', label: 'Новости', route: '/news' },
-    { icon: '👥', label: 'Мемберы', route: '/members' },
+    { label: 'Профиль', route: '/profile' },
+    { label: 'Создать заказ', route: '/order-create' },
+    { label: 'Новости', route: '/news' },
+    { label: 'Мемберы', route: '/members' },
   ];
 
   toggleNotifications() {
@@ -49,12 +48,4 @@ export class Sidebar {
     if (n.link) this.router.navigateByUrl(n.link);
   }
 
-  iconForKind(kind: string): string {
-    if (kind === 'interview_approved') return '✅';
-    if (kind === 'interview_rejected') return '✕';
-    if (kind === 'order_assigned') return '📌';
-    if (kind === 'order_status') return '🔄';
-    if (kind === 'order_message') return '💬';
-    return '🔔';
-  }
 }

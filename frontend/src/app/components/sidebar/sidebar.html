@@ -8,7 +8,7 @@
     <div class="sidebar-section-label">Меню</div>
     @for (link of menuLinks; track link.route) {
       <a class="sidebar-link" [routerLink]="link.route" routerLinkActive="active" [routerLinkActiveOptions]="{exact: link.route === '/'}">
-        <span class="link-icon">{{ link.icon }}</span> {{ link.label }}
+        {{ link.label }}
         @if (link.badge) {
           <span class="sidebar-badge">{{ link.badge }}</span>
         }
@@ -17,7 +17,7 @@
 
     @if (auth.user()) {
       <button class="sidebar-link notify-btn" (click)="toggleNotifications()">
-        <span class="link-icon">🔔</span> Уведомления
+        Уведомления
         @if (notify.unread() > 0) {
           <span class="sidebar-badge">{{ notify.unread() }}</span>
         }
@@ -26,7 +26,6 @@
   </nav>
 
   <button class="theme-toggle" (click)="theme.toggle()" [title]="theme.theme() === 'dark' ? 'Светлая тема' : 'Тёмная тема'">
-    <span class="theme-toggle-icon">{{ theme.theme() === 'dark' ? '☀' : '☾' }}</span>
     <span class="theme-toggle-label">{{ theme.theme() === 'dark' ? 'Светлая тема' : 'Тёмная тема' }}</span>
   </button>
 
@@ -58,7 +57,6 @@
       <div class="notify-list">
         @for (n of notify.notifications(); track n.id) {
           <button class="notify-item" [class.unread]="!n.is_read" (click)="openNotification(n)">
-            <span class="notify-icon">{{ iconForKind(n.kind) }}</span>
             <div class="notify-body">
               <div class="notify-text">{{ n.text }}</div>
               <div class="notify-time">{{ n.created_at | date:'dd MMM, HH:mm' }}</div>

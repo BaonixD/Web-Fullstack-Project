@@ -68,9 +68,9 @@ export class Profile implements OnInit {
   }
 
   getTypeLabel(type: string): string {
-    if (type === 'video') return '🎥 Видео';
-    if (type === 'photo') return '📸 Фото';
-    return '🎙 Звук';
+    if (type === 'video') return 'Видео';
+    if (type === 'photo') return 'Фото';
+    return 'Звук';
   }
 
   getStatusClass(status: string): string {
