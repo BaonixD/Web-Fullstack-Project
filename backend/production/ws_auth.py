@@ -2,16 +2,19 @@ from urllib.parse import parse_qs
 
 from channels.db import database_sync_to_async
 from django.contrib.auth.models import AnonymousUser
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 
 @database_sync_to_async
 def get_user_for_token(token_key):
     if not token_key:
         return AnonymousUser()
+    jwt_auth = JWTAuthentication()
     try:
-        return Token.objects.select_related('user').get(key=token_key).user
-    except Token.DoesNotExist:
+        validated_token = jwt_auth.get_validated_token(token_key)
+        return jwt_auth.get_user(validated_token)
+    except (InvalidToken, TokenError):
         return AnonymousUser()
 
 

@@ -2,8 +2,8 @@ from rest_framework.decorators import api_view, permission_classes, parser_class
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, permissions
-from rest_framework.authtoken.models import Token
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.db.models import Q
 from django.utils import timezone
 
@@ -42,14 +42,23 @@ def _order_stakeholders(order, exclude=None):
 
 # ============ AUTH ============
 
+def _jwt_response(user):
+    refresh = RefreshToken.for_user(user)
+    access = refresh.access_token
+    return {
+        'access': str(access),
+        'refresh': str(refresh),
+        # Backward-compatible alias for frontend code that checks `auth.token`.
+        'token': str(access),
+    }
+
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 def register_fbv(request):
     serializer = UserRegistrationSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key}, status=status.HTTP_201_CREATED)
+        return Response(_jwt_response(user), status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -69,9 +78,14 @@ def login_fbv(request):
 
     user = authenticate(username=username, password=password)
     if user:
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key})
+        return Response(_jwt_response(user))
     return Response({'error': 'Неверный логин или пароль'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def logout_fbv(request):
+    return Response({'ok': True})
 
 
 @api_view(['GET', 'PATCH'])

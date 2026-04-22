@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (
     login_fbv,
+    logout_fbv,
     register_fbv,
     news_list_fbv,
     news_detail_fbv,
@@ -21,6 +22,7 @@ from .views import (
 
 urlpatterns = [
     path('login/', login_fbv, name='login'),
+    path('logout/', logout_fbv, name='logout'),
     path('register/', register_fbv, name='register'),
     path('me/', current_user_fbv, name='current-user'),
     path('news/', news_list_fbv, name='news-list'),

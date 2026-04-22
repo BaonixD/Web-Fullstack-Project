@@ -32,7 +32,7 @@ OneTake is a web application for managing media production requests inside a tea
 - Django 5
 - Django REST Framework
 - Django Channels
-- Token Authentication
+- JWT Authentication
 - SQLite for local development
 
 ### Frontend
@@ -57,6 +57,7 @@ OneTake is a web application for managing media production requests inside a tea
 │   ├── angular.json
 │   ├── package.json
 │   └── proxy.conf.json
+├── OneTake.postman_collection.json
 ├── requirements.txt      # Python dependencies
 └── README.md
 ```
@@ -164,11 +165,18 @@ npm test
 
 ## API Overview
 
+Postman collection:
+
+```text
+OneTake.postman_collection.json
+```
+
 Main backend endpoints:
 
 ```text
 POST   /api/register/                         register a user
 POST   /api/login/                            log in
+POST   /api/logout/                           log out
 GET    /api/me/                               get current user
 PATCH  /api/me/                               update avatar
 

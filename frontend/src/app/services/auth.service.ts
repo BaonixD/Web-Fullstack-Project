@@ -14,20 +14,24 @@ export interface UserInfo {
   avatar_url?: string | null;
 }
 
+interface JwtAuthResponse {
+  access: string;
+  refresh: string;
+  token?: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private tokenKey = 'auth_token';
+  private tokenKey = 'access_token';
+  private refreshTokenKey = 'refresh_token';
   private currentUser = signal<UserInfo | null>(null);
 
   user = this.currentUser.asReadonly();
   isLoggedIn = computed(() => !!this.token);
 
   constructor(private http: HttpClient, private router: Router) {
-    const legacyToken = localStorage.getItem(this.tokenKey);
-    if (!sessionStorage.getItem(this.tokenKey) && legacyToken) {
-      sessionStorage.setItem(this.tokenKey, legacyToken);
-      localStorage.removeItem(this.tokenKey);
-    }
+    sessionStorage.removeItem('auth_token');
+    localStorage.removeItem('auth_token');
     if (this.token) {
       this.loadUser();
     }
@@ -67,22 +71,20 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    return this.http.post<{ token: string }>('/api/login/', { username, password }).pipe(
+    return this.http.post<JwtAuthResponse>('/api/login/', { username, password }).pipe(
       tap(res => {
-        sessionStorage.setItem(this.tokenKey, res.token);
-        localStorage.removeItem(this.tokenKey);
+        this.storeTokens(res);
         this.loadUser();
       })
     );
   }
 
   register(username: string, email: string, password: string, firstName: string, lastName: string) {
-    return this.http.post<{ token: string }>('/api/register/', {
+    return this.http.post<JwtAuthResponse>('/api/register/', {
       username, email, password, first_name: firstName, last_name: lastName
     }).pipe(
       tap(res => {
-        sessionStorage.setItem(this.tokenKey, res.token);
-        localStorage.removeItem(this.tokenKey);
+        this.storeTokens(res);
         this.loadUser();
       })
     );
@@ -100,9 +102,21 @@ export class AuthService {
   }
 
   logout() {
+    if (this.token) {
+      this.http.post('/api/logout/', {}).subscribe({ error: () => {} });
+    }
     sessionStorage.removeItem(this.tokenKey);
+    sessionStorage.removeItem(this.refreshTokenKey);
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.refreshTokenKey);
     this.currentUser.set(null);
     this.router.navigate(['/']);
+  }
+
+  private storeTokens(res: JwtAuthResponse) {
+    sessionStorage.setItem(this.tokenKey, res.access);
+    sessionStorage.setItem(this.refreshTokenKey, res.refresh);
+    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.refreshTokenKey);
   }
 }
